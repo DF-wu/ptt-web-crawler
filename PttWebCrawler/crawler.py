@@ -109,7 +109,7 @@ class PttWebCrawler(object):
                             self.store(filename, self.parse(link, article_id, board) + ',\n', 'a')
                     except:
                         pass
-                time.sleep(random.choice(delay_array/1000))
+                time.sleep(random.choice(delay_array)/1000)
                 # time.sleep(0.1)
             self.store(filename, u']}', 'a')
             return filename
