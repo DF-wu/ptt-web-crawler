@@ -89,7 +89,7 @@ class PttWebCrawler(object):
                 print('Processing index:', str(index))
                 resp = s.get(
                     url = self.PTT_URL + '/bbs/' + board + '/index' + str(index) + '.html',
-                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout, headers=headers
+                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout
                 )
                 if resp.status_code != 200:
                     print('invalid url:', resp.url)
