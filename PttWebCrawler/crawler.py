@@ -13,8 +13,9 @@ import codecs
 from bs4 import BeautifulSoup
 from requests.api import request
 from six import u
-
+from fake_useragent import UserAgent
 from requests.adapters import HTTPAdapter
+import random
 
 __version__ = '1.0'
 
@@ -23,6 +24,22 @@ VERIFY = True
 if sys.version_info[0] < 3:
     VERIFY = False
     requests.packages.urllib3.disable_warnings()
+
+
+headers = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
+    "Accept-Encoding": "gzip, deflate, br", 
+    "Accept-Language": "zh-TW,zh;q=0.9", 
+    "Host": "example.com",  #目標網站 
+    "Sec-Fetch-Dest": "document", 
+    "Sec-Fetch-Mode": "navigate", 
+    "Sec-Fetch-Site": "none", 
+    "Upgrade-Insecure-Requests": "1", 
+    "User-Agent": UserAgent()
+        # "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36" #使用者代理
+}
+
+delay_array = [80,100,120,140,160]
 
 
 class PttWebCrawler(object):
@@ -71,7 +88,7 @@ class PttWebCrawler(object):
                 print('Processing index:', str(index))
                 resp = s.get(
                     url = self.PTT_URL + '/bbs/' + board + '/index' + str(index) + '.html',
-                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout
+                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout, headers=headers
                 )
                 if resp.status_code != 200:
                     print('invalid url:', resp.url)
@@ -90,7 +107,8 @@ class PttWebCrawler(object):
                             self.store(filename, self.parse(link, article_id, board) + ',\n', 'a')
                     except:
                         pass
-                time.sleep(0.1)
+                delay = random.choice(delay_array)
+                time.sleep(delay)
             self.store(filename, u']}', 'a')
             return filename
 
