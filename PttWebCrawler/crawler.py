@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 from requests.api import request
 from six import u
 
+from requests.adapters import HTTPAdapter
+
 __version__ = '1.0'
 
 # if python 2, disable verify flag in requests.get()
