@@ -28,9 +28,9 @@ if sys.version_info[0] < 3:
 fake_useragent = UserAgent()
 
 headers = {
-    "Accept": "*", 
+    # "Accept": "*", 
     # "Accept-Encoding": "gzip, deflate, br", 
-    "Accept-Language": "zh-TW,zh;q=0.9", 
+    # "Accept-Language": "zh-TW,zh;q=0.9", 
     "Host": "ptt.cc",  #目標網站 
     # "Sec-Fetch-Dest": "document", 
     # "Sec-Fetch-Mode": "navigate", 
@@ -108,7 +108,8 @@ class PttWebCrawler(object):
                             self.store(filename, self.parse(link, article_id, board) + ',\n', 'a')
                     except:
                         pass
-                time.sleep(random.choice(delay_array/1000))
+                # time.sleep(random.choice(delay_array/1000))
+                time.sleep(0.1)
             self.store(filename, u']}', 'a')
             return filename
 
