@@ -33,7 +33,7 @@ headers = {
     # "Accept": "*", 
     # "Accept-Encoding": "gzip, deflate, br", 
     # "Accept-Language": "zh-TW,zh;q=0.9", 
-    "Host": "ptt.cc",  #目標網站 
+    # "Host": "ptt.cc",  #目標網站 
     # "Sec-Fetch-Dest": "document", 
     # "Sec-Fetch-Mode": "navigate", 
     # "Sec-Fetch-Site": "none", 
@@ -91,7 +91,7 @@ class PttWebCrawler(object):
                 print('Processing index:', str(index))
                 resp = s.get(
                     url = self.PTT_URL + '/bbs/' + board + '/index' + str(index) + '.html',
-                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout, headers = headers
+                    cookies={'over18': '1'}, verify=VERIFY, timeout=timeout, headers={ 'user-agent': random.choice(ua) }
                 )
                 if resp.status_code != 200:
                     print('invalid url:', resp.url)
