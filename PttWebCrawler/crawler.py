@@ -11,6 +11,7 @@ import argparse
 import time
 import codecs
 from bs4 import BeautifulSoup
+from requests.api import request
 from six import u
 
 __version__ = '1.0'
@@ -56,14 +57,17 @@ class PttWebCrawler(object):
                 article_id = args.a
                 self.parse_article(article_id, board)
 
-    def parse_articles(self, start, end, board, path='.', timeout=3):
+    def parse_articles(self, start, end, board, path='.', timeout=5, max_retries = 5):
             filename = board + '-' + str(start) + '-' + str(end) + '.json'
             filename = os.path.join(path, filename)
             self.store(filename, u'{"articles": [', 'w')
+            s = requests.Session()
+            s.mount('http://', HTTPAdapter(max_retries))
+            s.mount('https://', HTTPAdapter(max_retries))
             for i in range(end-start+1):
                 index = start + i
                 print('Processing index:', str(index))
-                resp = requests.get(
+                resp = s.get(
                     url = self.PTT_URL + '/bbs/' + board + '/index' + str(index) + '.html',
                     cookies={'over18': '1'}, verify=VERIFY, timeout=timeout
                 )
